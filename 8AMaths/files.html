@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程资料下载 - 橙子粥粥粥丨个人博客</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/ionicons@5.5.2/dist/css/ionicons.min.css" rel="stylesheet">
+    
+    <style>
+        /* === 从 playback.html 复制的基础样式 === */
+        :root {
+            --platinum: #E5E4E2;
+            --silver: #C0C0C0;
+            --metal-accent: #6C757D;
+            --obsidian: #0A0A0A;
+            --orange: #FF8C42;
+            --orange-light: #FFB88C;
+            --gradient-angle: 152deg;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(
+                var(--gradient-angle),
+                var(--platinum) 0%,
+                rgba(229,228,226,0.95) 50%,
+                rgba(192,192,192,0.9) 100%
+            );
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
+            padding-top: 80px; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏样式保持不变 */
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.88);
+            padding: 1.2rem 5%;
+            backdrop-filter: saturate(180%) blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--obsidian);
+            letter-spacing: 1.2px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--metal-accent);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: var(--orange);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--metal-accent);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        /* 主体内容样式 */
+        main {
+            flex-grow: 1;
+            max-width: 1000px; /* 略微收窄主内容宽度 */
+            margin: 0 auto;
+            padding: 2rem 5%;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--obsidian);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--orange);
+        }
+        
+        /* === 资料列表 (Accordion) 样式 === */
+        .files-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .lesson-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .lesson-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .lesson-header {
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: #fcfcfc;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .lesson-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--obsidian);
+        }
+
+        .lesson-subtitle {
+            font-size: 0.85rem;
+            color: var(--metal-accent);
+            margin-top: 5px;
+        }
+
+        .toggle-icon ion-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.3rem;
+            color: var(--orange);
+        }
+        
+        /* 旋转图标 */
+        .lesson-header.active .toggle-icon ion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 资料列表内容 */
+        .file-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background: #ffffff;
+        }
+        
+        .file-list.open {
+            /* 足够大的值确保内容完全展开 */
+            max-height: 500px; 
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .file-item:first-child {
+            border-top: none;
+        }
+
+        .file-label {
+            font-weight: 500;
+            color: var(--metal-accent);
+        }
+
+        .download-btn {
+            background: var(--orange);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s ease;
+        }
+
+        .download-btn:hover {
+            background: #e67e22;
+        }
+
+        /* 底部样式保持不变 */
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .copyright {
+            color: var(--metal-accent);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="nav-links">
+                <a href="https://czzzzcczzzz.github.io/index.html" class="nav-link">首页</a>
+                <a href="https://czzzzcczzzz.github.io/playback.html" class="nav-link">资料</a> 
+                <a href="https://czzzzcczzzz.github.io/blog.html" class="nav-link">文章</a>
+                <a href="https://czzzzcczzzz.github.io/video.html" class="nav-link">视频</a>
+                <div class="user-info" id="user-info" style="display: none;">
+                    <div class="user-avatar" id="user-avatar">?</div>
+                    <span id="username-display">用户</span>
+                    <a href="#" class="nav-link" id="logout-link">退出</a>
+                </div>
+                <a href="login.html" class="nav-link" id="login-link" style="display: block;">登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="files-section">
+            <h2 class="section-title">课程资料下载 📚</h2>
+            
+ <div class="files-container" id="files-container">
+    
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="1">
+            <div>
+                <div class="lesson-title">第一讲：一次函数与全等存在性问题</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L1_fundamentals.pdf" target="_blank" class="download-btn">
+                    <ion-icon name="download-outline"></ion-icon> 下载
+                </a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L1_quiz.pdf" target="_blank" class="download-btn">
+                    <ion-icon name="download-outline"></ion-icon> 下载
+                </a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L1_quiz_ans.pdf" target="_blank" class="download-btn">
+                    <ion-icon name="download-outline"></ion-icon> 下载
+                </a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L1_examples_ans.pdf" target="_blank" class="download-btn">
+                    <ion-icon name="download-outline"></ion-icon> 下载
+                </a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L1_hw_ans.pdf" target="_blank" class="download-btn">
+                    <ion-icon name="download-outline"></ion-icon> 下载
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="2">
+            <div>
+                <div class="lesson-title">第二讲：一次函数与几何模型</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L2_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L2_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L2_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L2_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L2_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="3">
+            <div>
+                <div class="lesson-title">第三讲：几何变换之旋转一</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L3_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L3_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L3_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L3_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L3_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="4">
+            <div>
+                <div class="lesson-title">第四讲：几何变换之旋转二</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L4_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L4_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L4_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L4_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L4_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="5">
+            <div>
+                <div class="lesson-title">第五讲：几何变换之平移</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L5_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L5_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L5_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L5_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L5_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="6">
+            <div>
+                <div class="lesson-title">第六讲：几何变换之对称一</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L6_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L6_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L6_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L6_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L6_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="7">
+            <div>
+                <div class="lesson-title">第七讲：几何变换之对称二</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L7_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L7_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L7_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L7_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L7_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="8">
+            <div>
+                <div class="lesson-title">第八讲：前沿命题剖析与能力培养（期中复习）</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L8_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L8_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L8_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L8_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L8_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="9">
+            <div>
+                <div class="lesson-title">第九讲：折叠问题</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L9_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L9_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L9_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L9_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L9_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="10">
+            <div>
+                <div class="lesson-title">第十讲：绝配角与角格点问题</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L10_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L10_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L10_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L10_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L10_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="11">
+            <div>
+                <div class="lesson-title">第十一讲：成比例线段及其模型</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L11_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L11_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L11_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L11_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L11_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="12">
+            <div>
+                <div class="lesson-title">第十二讲：相似图形的性质及判定</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L12_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L12_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L12_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L12_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L12_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="13">
+            <div>
+                <div class="lesson-title">第十三讲：相似三角形的基本模型（一）</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L13_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L13_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L13_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L13_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L13_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="14">
+            <div>
+                <div class="lesson-title">第十四讲：相似三角形的基本模型（二）</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L14_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L14_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L14_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L14_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L14_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="15">
+            <div>
+                <div class="lesson-title">第十五讲：相似三角形动态问题综合</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L15_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L15_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L15_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L15_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L15_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="16">
+            <div>
+                <div class="lesson-title">第十六讲：梅涅劳斯定理与塞瓦定理</div>
+                <div class="lesson-subtitle">（课程文件已更新至最新版本）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L16_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L16_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L16_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L16_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L16_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-card">
+        <div class="lesson-header" data-lesson="17">
+            <div>
+                <div class="lesson-title">第十七讲：前沿命题剖析与能力培养（期末复习）</div>
+                <div class="lesson-subtitle">（包含完整的考点总结）</div>
+            </div>
+            <div class="toggle-icon">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="file-list">
+            <div class="file-item">
+                <span class="file-label">课前基本功 (PDF)</span>
+                <a href="/files/L17_fundamentals.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">课前小测 (PDF)</span>
+                <a href="/files/L17_quiz.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">小测答案 (PDF)</span>
+                <a href="/files/L17_quiz_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">例题答案 (PDF)</span>
+                <a href="/files/L17_examples_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+            <div class="file-item">
+                <span class="file-label">作业答案 (PDF)</span>
+                <a href="/files/L17_hw_ans.pdf" target="_blank" class="download-btn"><ion-icon name="download-outline"></ion-icon> 下载</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="social-links">
+                <a href="#" class="social-link"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="#" class="social-link"><ion-icon name="logo-weibo"></ion-icon></a>
+                <a href="#" class="social-link"><ion-icon name="mail-outline"></ion-icon></a>
+            </div>
+            <p class="copyright">© 2025 橙子粥粥粥的个人博客. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        // 登录检查和用户信息显示 (与 playback.html 相同)
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const username = localStorage.getItem('username');
+            const logoutLink = document.getElementById('logout-link');
+
+            // --- 登录检查 ---
+            if (isLoggedIn !== 'true') {
+                alert('您必须登录才能查看课程资料！');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // --- 用户信息显示 ---
+            const usernameDisplay = document.getElementById('username-display');
+            const userAvatar = document.getElementById('user-avatar');
+            
+            if (username) {
+                usernameDisplay.textContent = username;
+                userAvatar.textContent = username.charAt(0).toUpperCase();
+            } else {
+                usernameDisplay.textContent = '用户';
+                userAvatar.textContent = 'U';
+            }
+            
+            // --- 退出登录功能 ---
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                alert('已退出登录');
+                window.location.href = 'index.html'; 
+            });
+
+            // --- 资料列表折叠功能 ---
+            const lessonHeaders = document.querySelectorAll('.lesson-header');
+
+            lessonHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const fileList = this.nextElementSibling;
+                    const isActive = this.classList.contains('active');
+
+                    // 关闭所有已打开的列表
+                    document.querySelectorAll('.file-list.open').forEach(list => {
+                        if (list !== fileList) {
+                             list.classList.remove('open');
+                             list.style.maxHeight = null;
+                             list.previousElementSibling.classList.remove('active');
+                        }
+                    });
+
+                    // 切换当前列表
+                    if (isActive) {
+                        this.classList.remove('active');
+                        fileList.classList.remove('open');
+                        fileList.style.maxHeight = null; // 关闭动画
+                    } else {
+                        this.classList.add('active');
+                        fileList.classList.add('open');
+                        // 设置 Max Height 来触发 CSS 动画
+                        fileList.style.maxHeight = fileList.scrollHeight + "px"; 
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
