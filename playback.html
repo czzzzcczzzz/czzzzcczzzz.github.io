@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回放列表 - 橙子粥粥粥丨个人博客</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/ionicons@5.5.2/dist/css/ionicons.min.css" rel="stylesheet">
+    
+    <style>
+        /* 从 index2.html 复制的基本和导航栏样式 */
+        :root {
+            --platinum: #E5E4E2;
+            --silver: #C0C0C0;
+            --metal-accent: #6C757D;
+            --obsidian: #0A0A0A;
+            --orange: #FF8C42;
+            --orange-light: #FFB88C;
+            --gradient-angle: 152deg;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(
+                var(--gradient-angle),
+                var(--platinum) 0%,
+                rgba(229,228,226,0.95) 50%,
+                rgba(192,192,192,0.9) 100%
+            );
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            padding-top: 80px; /* 留出固定导航栏的高度 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.88);
+            padding: 1.2rem 5%;
+            backdrop-filter: saturate(180%) blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--obsidian);
+            letter-spacing: 1.2px;
+            font-weight: 700;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--metal-accent);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--metal-accent);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        /* 新增或修改的样式 */
+        main {
+            flex-grow: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--obsidian);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--orange);
+        }
+
+        .playback-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* 统一长按钮样式，从 index2.html 复制并修改 */
+        .cta-button {
+            padding: 1rem 2.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            width: 100%; /* 使其成为长按钮 */
+            justify-content: space-between; /* 内容两端对齐 */
+            text-align: left;
+        }
+
+        .primary-cta {
+            background: var(--orange);
+            color: white;
+            box-shadow: 0 4px 6px rgba(255, 140, 66, 0.15);
+        }
+
+        .primary-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 140, 66, 0.2);
+        }
+
+        .playback-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .playback-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .playback-meta {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .playback-icon {
+            font-size: 1.5rem;
+            margin-left: 1rem;
+        }
+
+
+        /* 底部样式 - 从 index2.html 复制 */
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-link {
+            color: var(--metal-accent);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--orange);
+        }
+
+        .copyright {
+            color: var(--metal-accent);
+            font-size: 0.9rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* 移动端暂时隐藏 */
+            }
+            .playback-info {
+                max-width: 75%; /* 限制宽度，防止文字太长挤压图标 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="nav-links">
+                <a href="index2.html" class="nav-link">首页</a>
+                <a href="blog.html" class="nav-link">文章</a>
+                <a href="video.html" class="nav-link">视频</a>
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar" id="user-avatar">?</div>
+                    <span id="username-display">用户</span>
+                    <a href="profile.html" class="nav-link">资料</a>
+                    <a href="#" class="nav-link" id="logout-link">退出</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="playback-section">
+            <h2 class="section-title">课程回放列表 📹</h2>
+            
+            <div class="playback-list" id="playback-list">
+                
+                <a href="8AMaths/8Aindex.html" class="cta-button primary-cta">
+                    <div class="playback-info">
+                        <div class="playback-title">八年级秋季自招班数学</div>
+                        <div class="playback-meta">授课时间: **2025-09-06 - 2026-01-03** | 授课老师: **高扶林老师**</div>
+                    </div>
+                    <ion-icon name="play-circle-outline" class="playback-icon"></ion-icon>
+                </a>
+
+                <a href="playback_detail_2.html" class="cta-button primary-cta">
+                    <div class="playback-info">
+                        <div class="playback-title">《Vue 3响应式原理精讲》</div>
+                        <div class="playback-meta">授课时间: **2023-11-08 20:00** | 授课老师: **粥粥老师**</div>
+                    </div>
+                    <ion-icon name="play-circle-outline" class="playback-icon"></ion-icon>
+                </a>
+                
+                <a href="playback_detail_3.html" class="cta-button primary-cta">
+                    <div class="playback-info">
+                        <div class="playback-title">《Web性能优化实战技巧》</div>
+                        <div class="playback-meta">授课时间: **2023-11-15 20:00** | 授课老师: **橙子老师**</div>
+                    </div>
+                    <ion-icon name="play-circle-outline" class="playback-icon"></ion-icon>
+                </a>
+
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-weibo"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="mail-outline"></ion-icon>
+                </a>
+            </div>
+            <p class="copyright">© 2025 橙子粥粥粥的个人博客. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        // 检查登录状态 - 必须登录才能访问此页面
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const username = localStorage.getItem('username');
+            
+            // 如果未登录，跳转到登录页面
+            if (isLoggedIn !== 'true') {
+                alert('您必须登录才能查看课程回放！');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // 登录后才执行以下逻辑：
+            
+            // 显示用户信息
+            const usernameDisplay = document.getElementById('username-display');
+            const userAvatar = document.getElementById('user-avatar');
+            const logoutLink = document.getElementById('logout-link');
+            
+            if (username) {
+                usernameDisplay.textContent = username;
+                userAvatar.textContent = username.charAt(0).toUpperCase(); // 显示首字母大写
+            } else {
+                usernameDisplay.textContent = '用户';
+                userAvatar.textContent = 'U';
+            }
+            
+            // 退出登录功能
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                alert('已退出登录');
+                window.location.href = 'index.html'; // 退出后可以回到未登录的首页
+            });
+        });
+    </script>
+</body>
+</html>
