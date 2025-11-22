@@ -376,11 +376,12 @@
                 <a href="index.html" class="nav-link">首页</a>
                 <a href="blog.html" class="nav-link">文章</a>
                 <a href="video.html" class="nav-link">视频</a>
-                <a href="login.html" class="nav-link" id="login-link" style="display: none;">登录</a>
-                <div class="user-info" id="user-info">
+                <a href="login.html" class="nav-link" id="login-link">登录</a>
+                <a href="playback.html" class="nav-link">网课</a>
+                <div class="user-info" id="user-info" style="display: none;">
                     <div class="user-avatar" id="user-avatar">橙</div>
                     <span id="username-display">用户</span>
-                    <a href="profile.html" class="nav-link">资料</a>
+                    <a href="playback.html" class="nav-link">资料</a>
                     <a href="#" class="nav-link" id="logout-link">退出</a>
                 </div>
             </div>
@@ -402,10 +403,6 @@
                 <a href="video.html" class="cta-button secondary-cta">
                     <ion-icon name="play-circle-outline"></ion-icon>
                     观看视频
-                </a>
-                <a href="profile.html" class="cta-button secondary-cta">
-                    <ion-icon name="person-outline"></ion-icon>
-                    个人资料
                 </a>
             </div>
         </section>
@@ -503,26 +500,26 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <script>
-        // 检查登录状态 - 必须登录才能访问此页面
+        // 检查登录状态
         document.addEventListener('DOMContentLoaded', function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             const username = localStorage.getItem('username');
-            
-            // 如果未登录，跳转到登录页面
-            if (isLoggedIn !== 'true') {
-                alert('请先登录！');
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            // 显示用户信息
+            const loginLink = document.getElementById('login-link');
+            const userInfo = document.getElementById('user-info');
             const usernameDisplay = document.getElementById('username-display');
             const userAvatar = document.getElementById('user-avatar');
             const logoutLink = document.getElementById('logout-link');
             
-            if (username) {
+            if (isLoggedIn === 'true' && username) {
+                // 用户已登录，显示用户信息和资料链接
+                loginLink.style.display = 'none';
+                userInfo.style.display = 'flex';
                 usernameDisplay.textContent = username;
                 userAvatar.textContent = username.charAt(0);
+            } else {
+                // 用户未登录，显示登录链接
+                loginLink.style.display = 'block';
+                userInfo.style.display = 'none';
             }
             
             // 退出登录功能
@@ -531,7 +528,7 @@
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('username');
                 alert('已退出登录');
-                window.location.href = 'index.html';
+                window.location.reload();
             });
         });
     </script>
