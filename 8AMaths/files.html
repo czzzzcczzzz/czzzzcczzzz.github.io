@@ -264,6 +264,58 @@
             font-size: 0.9rem;
         }
 
+        /* 登录提示样式 */
+        .login-prompt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin: 20px 0;
+        }
+        
+        .login-icon {
+            font-size: 4rem;
+            color: var(--orange);
+            margin-bottom: 20px;
+        }
+        
+        .login-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--obsidian);
+        }
+        
+        .login-description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: var(--metal-accent);
+            max-width: 500px;
+        }
+        
+        .login-button {
+            background: var(--orange);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .login-button:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none; 
@@ -290,11 +342,11 @@
         </div>
     </nav>
 
-    <main>
+    <main id="mainContent" style="display: none;">
         <section class="files-section">
             <h2 class="section-title">课程资料下载 📚</h2>
             
- <div class="files-container" id="files-container">
+ <div class="files-container" id="files-container">            
     
     <div class="lesson-card">
         <div class="lesson-header" data-lesson="1">
@@ -920,10 +972,21 @@
             </div>     
         </div>
     </div>
-
-</div>
+            </div>
         </section>
     </main>
+
+    <!-- 登录提示区域 -->
+    <div id="loginPrompt" class="login-prompt" style="display: none;">
+        <div class="login-icon">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+        </div>
+        <h2 class="login-title">需要登录</h2>
+        <p class="login-description">您需要登录才能查看和下载课程资料。请点击下方按钮登录您的账户。</p>
+        <a href="login.html" class="login-button">
+            <ion-icon name="log-in-outline"></ion-icon> 立即登录
+        </a>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -941,23 +1004,37 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <script>
-        // 登录检查和用户信息显示 (与 playback.html 相同)
+        // 登录检查和用户信息显示
         document.addEventListener('DOMContentLoaded', function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             const username = localStorage.getItem('username');
+            const mainContent = document.getElementById('mainContent');
+            const loginPrompt = document.getElementById('loginPrompt');
+            const userInfo = document.getElementById('user-info');
+            const loginLink = document.getElementById('login-link');
             const logoutLink = document.getElementById('logout-link');
+            const usernameDisplay = document.getElementById('username-display');
+            const userAvatar = document.getElementById('user-avatar');
 
             // --- 登录检查 ---
             if (isLoggedIn !== 'true') {
-                alert('您必须登录才能查看课程资料！');
-                window.location.href = 'login.html';
-                return;
+                // 未登录，显示登录提示，隐藏主要内容
+                loginPrompt.style.display = 'flex';
+                mainContent.style.display = 'none';
+                
+                // 导航栏显示登录链接
+                loginLink.style.display = 'block';
+                userInfo.style.display = 'none';
+                
+                return; // 停止执行后续代码
             }
             
-            // --- 用户信息显示 ---
-            const usernameDisplay = document.getElementById('username-display');
-            const userAvatar = document.getElementById('user-avatar');
+            // --- 已登录的情况 ---
+            // 显示主要内容，隐藏登录提示
+            mainContent.style.display = 'block';
+            loginPrompt.style.display = 'none';
             
+            // --- 用户信息显示 ---
             if (username) {
                 usernameDisplay.textContent = username;
                 userAvatar.textContent = username.charAt(0).toUpperCase();
@@ -965,6 +1042,10 @@
                 usernameDisplay.textContent = '用户';
                 userAvatar.textContent = 'U';
             }
+            
+            // 导航栏显示用户信息，隐藏登录链接
+            userInfo.style.display = 'flex';
+            loginLink.style.display = 'none';
             
             // --- 退出登录功能 ---
             logoutLink.addEventListener('click', function(e) {
@@ -1009,5 +1090,3 @@
     </script>
 </body>
 </html>
-
-
