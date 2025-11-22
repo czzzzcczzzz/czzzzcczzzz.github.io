@@ -21,12 +21,15 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", sans-serif; }
 
+        /* 禁止选中文字，增加复制难度 */
         body {
             background: linear-gradient(var(--gradient-angle), var(--platinum) 0%, rgba(229,228,226,0.95) 50%, rgba(192,192,192,0.9) 100%);
             min-height: 100vh;
             padding-top: 80px;
             display: flex;
             flex-direction: column;
+            user-select: none; /* 禁止选中 */
+            -webkit-user-select: none;
         }
 
         /* 导航栏 */
@@ -66,7 +69,7 @@
             position: relative; width: 100%; padding-bottom: 56.25%; background-color: var(--obsidian);
             border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); margin-bottom: 2rem;
         }
-        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; outline: none; }
 
         .video-info { display: flex; justify-content: space-around; padding: 1rem 0; border-top: 1px dashed var(--silver); }
         .info-box { text-align: center; }
@@ -82,7 +85,7 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <nav class="nav-bar">
         <div class="nav-content">
             <div class="logo">橙子<span>粥粥粥</span></div>
@@ -113,7 +116,7 @@
             </div>
 
             <div class="video-container">
-                <video id="video-player" controls controlsList="nodownload">
+                <video id="video-player" controls controlsList="nodownload" disablePictureInPicture>
                     <source id="video-source" src="" type="video/mp4">
                     您的浏览器不支持 HTML5 视频。
                 </video>
@@ -165,8 +168,8 @@
             {
                 id: 3,
                 title: "第三讲：几何变换之旋转一",
-                p1_url: "",
-                p2_url: "",
+                p1_url: "https://playback.eeo.cn/794b4a11vodbj1252412222/1e7819215145403699412026159/f0.mp4",
+                p2_url: "https://playback.eeo.cn/794b4a11vodbj1252412222/956a25735145403699570855666/f0.mp4",
                 files_url: "8A03files.html"
             },
             {
@@ -269,8 +272,6 @@
             }
         ];
 
-        // ... (下方的 2. 页面逻辑 代码保持不变) ...
-
         // ==========================================
         // 2. 页面逻辑
         // ==========================================
@@ -300,6 +301,9 @@
 
             // 初始化播放部分
             switchPart(partParam);
+            
+            // --- 增强的防下载逻辑 ---
+            setupProtection();
         });
 
         // 切换 P1 / P2 逻辑
@@ -328,9 +332,37 @@
             videoPlayer.src = videoUrl;
             videoPlayer.load(); // 重新加载视频
             
-            // 更新 URL (不刷新页面)，方便用户分享特定分段
+            // 更新 URL (不刷新页面)
             const newUrl = `${window.location.pathname}?id=${lessonId}&part=${part}`;
             window.history.pushState({path: newUrl}, '', newUrl);
+        }
+
+        // === 防下载保护逻辑 ===
+        function setupProtection() {
+            const videoElement = document.getElementById('video-player');
+
+            // 1. 禁止视频区域右键
+            videoElement.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // 2. 禁止键盘快捷键 (Ctrl+S, Ctrl+U, F12)
+            document.addEventListener('keydown', function(e) {
+                // 禁止 F12
+                if (e.key === 'F12') { e.preventDefault(); return false; }
+                // 禁止 Ctrl+S (保存)
+                if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+                    e.preventDefault();
+                    alert('此页面内容受保护，无法保存。');
+                    return false;
+                }
+                // 禁止 Ctrl+U (查看源码 - 虽然防不住高手，但能防普通人)
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
         }
 
         // 登录检查
