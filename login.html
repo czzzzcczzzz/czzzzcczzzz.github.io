@@ -308,7 +308,7 @@
                     <ion-icon name="mail-outline"></ion-icon>
                 </a>
             </div>
-            <p class="copyright">© 2023 橙子粥粥粥的个人博客. 保留所有权利.</p>
+            <p class="copyright">© 2025 橙子粥粥粥的个人博客. 保留所有权利.</p>
         </div>
     </footer>
 
@@ -360,7 +360,7 @@
                 localStorage.setItem('username', username);
                 
                 alert('登录成功！即将跳转到首页...');
-                window.location.href = 'index2.html'; // 修改为跳转到index2.html
+                window.location.href = 'index.html'; // 修改为跳转到index.html
             } else {
                 alert('用户名或密码错误，请重试！');
             }
@@ -379,9 +379,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             if (isLoggedIn === 'true') {
-                window.location.href = 'index2.html'; // 修改为跳转到index2.html
+                window.location.href = 'index.html'; // 修改为跳转到index.html
             }
         });
     </script>
 </body>
+
 </html>
