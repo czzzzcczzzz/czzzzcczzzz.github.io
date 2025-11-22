@@ -8,7 +8,7 @@
     <link href="https://unpkg.com/ionicons@5.5.2/dist/css/ionicons.min.css" rel="stylesheet">
     
     <style>
-        /* 从 index.html 和 playback.html 复制的基本样式 */
+        /* === 样式保持不变 === */
         :root {
             --platinum: #E5E4E2;
             --silver: #C0C0C0;
@@ -19,280 +19,77 @@
             --gradient-angle: 152deg;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", "微软雅黑", sans-serif; }
 
         body {
-            background: linear-gradient(
-                var(--gradient-angle),
-                var(--platinum) 0%,
-                rgba(229,228,226,0.95) 50%,
-                rgba(192,192,192,0.9) 100%
-            );
+            background: linear-gradient(var(--gradient-angle), var(--platinum) 0%, rgba(229,228,226,0.95) 50%, rgba(192,192,192,0.9) 100%);
             min-height: 100vh;
             backdrop-filter: blur(2px);
             font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-            padding-top: 80px; /* 留出固定导航栏的高度 */
+            padding-top: 80px;
             display: flex;
             flex-direction: column;
         }
 
-        /* 导航栏样式（保持与 index.html 一致） */
         .nav-bar {
             background: rgba(255, 255, 255, 0.88);
             padding: 1.2rem 5%;
             backdrop-filter: saturate(180%) blur(20px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
+            position: fixed; width: 100%; top: 0; z-index: 1000;
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
 
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            color: var(--obsidian);
-            letter-spacing: 1.2px;
-            font-weight: 700;
-        }
-
-        .logo span {
-            color: var(--orange);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: var(--metal-accent);
-            text-decoration: none;
-            position: relative;
-            padding: 0.5rem 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--orange);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            color: var(--metal-accent);
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.9rem;
-        }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; color: var(--obsidian); letter-spacing: 1.2px; font-weight: 700; }
+        .logo span { color: var(--orange); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-link { color: var(--metal-accent); text-decoration: none; position: relative; padding: 0.5rem 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .user-info { display: flex; align-items: center; gap: 0.8rem; color: var(--metal-accent); }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.9rem; }
         
-        /* 页面主体样式 */
-        main {
-            flex-grow: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 5%;
-            width: 100%;
-        }
+        main { flex-grow: 1; max-width: 1200px; margin: 0 auto; padding: 2rem 5%; width: 100%; }
 
-        .course-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid var(--orange);
-        }
+        .course-header { text-align: center; margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 3px solid var(--orange); }
+        .course-title { font-size: 2.5rem; color: var(--obsidian); margin-bottom: 0.5rem; font-weight: 700; }
+        .course-subtitle { font-size: 1.2rem; color: var(--metal-accent); }
 
-        .course-title {
-            font-size: 2.5rem;
-            color: var(--obsidian);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        .course-subtitle {
-            font-size: 1.2rem;
-            color: var(--metal-accent);
-        }
-
-        .lecture-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
+        .lecture-list { display: flex; flex-direction: column; gap: 1.5rem; }
         .lecture-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; align-items: center; justify-content: space-between;
         }
-
-        .lecture-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-
-        .lecture-info {
-            display: flex;
-            align-items: center;
-        }
-        
-        .lecture-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--orange);
-            margin-right: 1.5rem;
-            min-width: 50px;
-            text-align: center;
-        }
-
-        .lecture-title-text {
-            font-size: 1.1rem;
-            color: var(--obsidian);
-            font-weight: 500;
-        }
-
-        .lecture-actions {
-            display: flex;
-            gap: 0.8rem;
-        }
+        .lecture-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); }
+        .lecture-info { display: flex; align-items: center; }
+        .lecture-number { font-size: 1.8rem; font-weight: 700; color: var(--orange); margin-right: 1.5rem; min-width: 50px; text-align: center; }
+        .lecture-title-text { font-size: 1.1rem; color: var(--obsidian); font-weight: 500; }
+        .lecture-actions { display: flex; gap: 0.8rem; }
 
         .action-button {
-            padding: 0.6rem 1rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
+            padding: 0.6rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem; font-weight: 500;
+            transition: background 0.3s ease; display: flex; align-items: center; gap: 0.4rem;
         }
+        .action-p1 { background: var(--orange-light); color: var(--obsidian); border: 1px solid var(--orange); }
+        .action-p1:hover { background: var(--orange); color: white; }
+        .action-p2 { background: var(--metal-accent); color: white; }
+        .action-p2:hover { background: var(--obsidian); }
+        .action-files { background: var(--platinum); color: var(--metal-accent); border: 1px solid var(--silver); }
+        .action-files:hover { background: var(--silver); color: var(--obsidian); }
 
-        .action-p1 {
-            background: var(--orange-light);
-            color: var(--obsidian);
-            border: 1px solid var(--orange);
-        }
-        
-        .action-p1:hover {
-            background: var(--orange);
-            color: white;
-        }
-        
-        .action-p2 {
-            background: var(--metal-accent);
-            color: white;
-        }
-
-        .action-p2:hover {
-            background: var(--obsidian);
-        }
-
-        .action-files {
-            background: var(--platinum);
-            color: var(--metal-accent);
-            border: 1px solid var(--silver);
-        }
-
-        .action-files:hover {
-            background: var(--silver);
-            color: var(--obsidian);
-        }
-
-        /* 底部样式（保持与 index.html 一致） */
-        footer {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 3rem 5%;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .social-link {
-            color: var(--metal-accent);
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .social-link:hover {
-            color: var(--orange);
-        }
-
-        .copyright {
-            color: var(--metal-accent);
-            font-size: 0.9rem;
-        }
+        footer { background: rgba(255, 255, 255, 0.9); padding: 3rem 5%; text-align: center; margin-top: 4rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+        .social-links { display: flex; justify-content: center; gap: 1.5rem; margin: 2rem 0; }
+        .social-link { color: var(--metal-accent); font-size: 1.5rem; transition: color 0.3s ease; }
+        .social-link:hover { color: var(--orange); }
+        .copyright { color: var(--metal-accent); font-size: 0.9rem; }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .lecture-card {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .lecture-info {
-                margin-bottom: 1rem;
-            }
-            .lecture-actions {
-                width: 100%;
-                justify-content: space-between;
-                gap: 0.5rem;
-            }
-            .action-button {
-                flex-grow: 1;
-                justify-content: center;
-            }
+            .nav-links { display: none; }
+            .lecture-card { flex-direction: column; align-items: flex-start; }
+            .lecture-info { margin-bottom: 1rem; }
+            .lecture-actions { width: 100%; justify-content: space-between; gap: 0.5rem; }
+            .action-button { flex-grow: 1; justify-content: center; }
         }
     </style>
 </head>
@@ -301,15 +98,17 @@
         <div class="nav-content">
             <div class="logo">橙子<span>粥粥粥</span></div>
             <div class="nav-links">
-                <a href="https://czzzzcczzzz.github.io/index.html" class="nav-link">首页</a>
-                <a href="https://czzzzcczzzz.github.io/blog.html" class="nav-link">文章</a>
-                <a href="https://czzzzcczzzz.github.io/video.html" class="nav-link">视频</a>
+                <a href="index2.html" class="nav-link">首页</a>
+                <a href="playback.html" class="nav-link">回放</a> 
+                <a href="blog.html" class="nav-link">文章</a>
+                <a href="video.html" class="nav-link">视频</a>
                 <div class="user-info" id="user-info" style="display: none;">
                     <div class="user-avatar" id="user-avatar">?</div>
                     <span id="username-display">用户</span>
+                    <a href="profile.html" class="nav-link">资料</a>
                     <a href="#" class="nav-link" id="logout-link">退出</a>
                 </div>
-                <a href="https://czzzzcczzzz.github.io/login.html" class="nav-link" id="login-link" style="display: block;">登录</a>
+                <a href="login.html" class="nav-link" id="login-link" style="display: block;">登录</a>
             </div>
         </div>
     </nav>
@@ -328,15 +127,9 @@
         <div class="footer-content">
             <div class="logo">橙子<span>粥粥粥</span></div>
             <div class="social-links">
-                <a href="#" class="social-link">
-                    <ion-icon name="logo-github"></ion-icon>
-                </a>
-                <a href="#" class="social-link">
-                    <ion-icon name="logo-weibo"></ion-icon>
-                </a>
-                <a href="#" class="social-link">
-                    <ion-icon name="mail-outline"></ion-icon>
-                </a>
+                <a href="#" class="social-link"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="#" class="social-link"><ion-icon name="logo-weibo"></ion-icon></a>
+                <a href="#" class="social-link"><ion-icon name="mail-outline"></ion-icon></a>
             </div>
             <p class="copyright">© 2025 橙子粥粥粥的个人博客. 保留所有权利.</p>
         </div>
@@ -353,7 +146,6 @@
             // 如果未登录，跳转到登录页面
             if (isLoggedIn !== 'true') {
                 alert('您必须登录才能查看本课程内容！');
-                // 使用 location.replace 确保后退按钮不会回到未登录的课程页面
                 window.location.replace('login.html'); 
                 return;
             }
@@ -390,13 +182,13 @@
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('username');
                 alert('已退出登录');
-                // 退出后回到未登录的首页
                 window.location.href = 'index.html'; 
             });
         }
 
-        // === 3. 动态生成课程列表（登录后执行） ===
+        // === 3. 动态生成课程列表 ===
         function generateLectureList() {
+            // 完整的 17 节课标题
             const lectures = [
                 "第一讲：一次函数与全等存在性问题",
                 "第二讲：一次函数与几何模型",
@@ -423,9 +215,12 @@
                 const lectureNumber = index + 1;
                 const paddedNumber = lectureNumber.toString().padStart(2, '0'); // 确保编号是 01, 02... 17
                 
-                const p1Href = `8A${paddedNumber}.html`;      // 8A01.html
-                const p2Href = `8A${paddedNumber}02.html`;    // 8A0102.html
-                const filesHref = `8A${paddedNumber}files.html`; // 8A01files.html
+                // === 核心修改：链接全部指向 8A_player.html，并带上参数 ===
+                const p1Href = `8A_player.html?id=${lectureNumber}&part=p1`;
+                const p2Href = `8A_player.html?id=${lectureNumber}&part=p2`;
+                
+                // 资料页仍然指向独立文件（或者您也可以改为指向 player）
+                const filesHref = `8A${paddedNumber}files.html`; 
 
                 const lectureCard = document.createElement('div');
                 lectureCard.className = 'lecture-card';
@@ -456,8 +251,4 @@
         }
     </script>
 </body>
-
 </html>
-
-
-
