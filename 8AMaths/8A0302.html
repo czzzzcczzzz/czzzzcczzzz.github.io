@@ -3,173 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第三讲 几何变换之旋转一</title>
+    <title>第三讲 几何变换之旋转一 - 创新S自招</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: 'Poppins', 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
-        
+
         :root {
-            --primary: #4a6fa5;
-            --secondary: #6c8bc7;
+            --primary: #007bff; /* 蓝色主色调 */
+            --primary-dark: #0056b3;
+            --secondary: #6c757d; /* 灰色辅助色 */
             --light: #ffffff;
-            --silver: #f5f7fa;
-            --silver-dark: #e1e5eb;
-            --dark: #2c3e50;
-            --gray: #7b8a9e;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --silver: #f8f9fa; /* 更浅的背景 */
+            --silver-dark: #e9ecef;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            background-color: var(--silver);
             color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1100px;
             margin: 0 auto;
             background-color: var(--light);
-            border-radius: 20px;
+            border-radius: var(--radius);
             box-shadow: var(--shadow);
             overflow: hidden;
         }
-        
+
         header {
-            background: linear-gradient(to right, var(--silver), var(--light));
-            color: var(--dark);
-            padding: 25px;
+            background: var(--light);
+            padding: 30px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid var(--silver-dark);
+            border-bottom: 3px solid var(--primary);
         }
-        
+
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
             font-weight: 700;
-            position: relative;
-            color: var(--dark);
+            color: var(--primary-dark);
         }
-        
+
         .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.8;
+            font-size: 1rem;
+            opacity: 0.9;
             margin-bottom: 15px;
-            position: relative;
+            color: var(--gray);
         }
-        
+
         .info {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin-top: 15px;
-            font-size: 1rem;
-            position: relative;
+            gap: 20px;
+            font-size: 0.9rem;
         }
-        
+
         .info-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 8px 15px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            color: var(--dark);
         }
-        
+
         .info-item i {
             color: var(--primary);
+            font-size: 1.1rem;
         }
-        
+
         .content {
             padding: 30px;
         }
-        
-        .video-container {
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            background: #000;
+
+        .video-wrapper {
             position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: #000;
             margin-bottom: 25px;
-            border: 1px solid var(--silver-dark);
         }
-        
+
         video {
             width: 100%;
             display: block;
             max-height: 500px;
         }
-        
-        .video-overlay {
+
+        /* 登录覆盖层样式 */
+        .login-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s;
+            text-align: center;
+            color: var(--light);
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        .login-overlay i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .login-overlay h2 {
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .login-overlay p {
+            margin-bottom: 30px;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .login-btn {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
         }
         
-        .video-container:hover .video-overlay {
-            opacity: 1;
-        }
-        
-        .play-icon {
-            font-size: 5rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-        }
-        
+        /* 视频控制区默认隐藏，登录后显示 */
         .controls {
-            background-color: var(--silver);
+            background-color: var(--silver-dark);
             padding: 15px 20px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             gap: 15px;
-            border-radius: 15px;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--silver-dark);
+            border-radius: var(--radius);
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+            opacity: 0; /* 默认隐藏 */
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s, height 0.5s;
+        }
+
+        .controls.active {
+            opacity: 1; /* 登录后显示 */
+            height: auto;
         }
         
         .progress-container {
             flex: 1;
             min-width: 200px;
         }
-        
+
         .progress-bar {
             width: 100%;
             height: 8px;
-            background-color: var(--silver-dark);
+            background-color: #ced4da;
             border-radius: 4px;
             cursor: pointer;
             position: relative;
             overflow: hidden;
         }
-        
+
         .progress {
             height: 100%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, var(--primary), #6aa84f);
             border-radius: 4px;
             width: 0%;
             position: relative;
             transition: width 0.1s;
         }
-        
+
         .progress::after {
             content: '';
             position: absolute;
@@ -182,7 +211,7 @@
             border-radius: 50%;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
-        
+
         .time {
             color: var(--dark);
             font-size: 0.9rem;
@@ -190,14 +219,14 @@
             text-align: center;
             font-weight: 500;
         }
-        
+
         .control-buttons {
             display: flex;
             gap: 10px;
         }
-        
+
         .control-btn {
-            background-color: white;
+            background-color: var(--light);
             color: var(--dark);
             border: none;
             width: 40px;
@@ -210,18 +239,18 @@
             align-items: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .control-btn:hover {
             background-color: var(--primary);
             color: white;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
-        
+
         .control-btn.active {
             background-color: var(--primary);
             color: white;
         }
-        
+
         select {
             padding: 8px 15px;
             border-radius: 20px;
@@ -231,23 +260,23 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
-        
+
         .volume-container {
             display: flex;
             align-items: center;
             gap: 10px;
             color: var(--dark);
         }
-        
+
         .volume-slider {
             width: 80px;
             -webkit-appearance: none;
             height: 5px;
             border-radius: 5px;
-            background: var(--silver-dark);
+            background: #ced4da;
             outline: none;
         }
-        
+
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 15px;
@@ -257,129 +286,67 @@
             cursor: pointer;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
-        
-        .video-switcher {
-            display: flex;
-            background: var(--silver);
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--silver-dark);
-        }
-        
-        .video-option {
-            flex: 1;
-            text-align: center;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .video-option:hover {
-            background: rgba(255, 255, 255, 0.7);
-        }
-        
-        .video-option.active {
-            background: white;
-            border-bottom: 3px solid var(--primary);
-        }
-        
-        .video-option-number {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--gray);
-        }
-        
-        .video-option.active .video-option-number {
-            color: var(--primary);
-        }
-        
-        .video-option-title {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        
+
         .video-info {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             margin-top: 20px;
-            padding: 15px;
+            padding: 20px;
             background: var(--silver);
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--silver-dark);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
-        
+
         .info-box {
             text-align: center;
         }
-        
+
         .info-value {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
         }
-        
+
         .info-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--gray);
             margin-top: 5px;
+            font-weight: 500;
         }
-        
+
         footer {
             text-align: center;
             padding: 20px;
-            background-color: var(--silver);
+            background-color: var(--silver-dark);
             color: var(--gray);
             border-top: 1px solid var(--silver-dark);
         }
-        
+
         .protection-notice {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 10px;
+            background-color: #e8f0fe;
+            border: 1px solid #c4d7f7;
+            border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
             text-align: center;
-            color: #856404;
+            color: var(--primary-dark);
+            font-weight: 600;
         }
-        
+
         @media (max-width: 768px) {
             .controls {
                 flex-direction: column;
                 align-items: stretch;
             }
-            
-            .progress-container {
-                order: 1;
-            }
-            
-            .control-buttons {
-                order: 2;
-                justify-content: center;
-            }
-            
-            .volume-container {
-                order: 3;
-                justify-content: center;
-            }
-            
-            .time {
-                order: 4;
-                text-align: center;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .info {
-                flex-direction: column;
-                gap: 10px;
-            }
+            .progress-container { order: 1; }
+            .time { order: 2; text-align: center; margin-top: 10px; }
+            .control-buttons { order: 3; justify-content: center; }
+            .volume-container { order: 4; justify-content: center; }
+            select { order: 5; text-align: center; }
+            h1 { font-size: 1.8rem; }
+            .info { flex-direction: column; gap: 10px; }
+            .video-info { flex-wrap: wrap; }
+            .info-box { flex-basis: 50%; margin-bottom: 15px; }
         }
     </style>
 </head>
@@ -390,7 +357,7 @@
             <div class="subtitle"> 第二集 八年级秋季数学创新S自招</div>
             <div class="info">
                 <div class="info-item">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-user-tie"></i>
                     <span>授课老师：高扶林</span>
                 </div>
                 <div class="info-item">
@@ -399,55 +366,58 @@
                 </div>
             </div>
         </header>
-        
+
         <div class="content">
             <div class="protection-notice">
-                <i class="fas fa-shield-alt"></i> 本播放器已启用内容保护，视频仅供在线观看，禁止下载和转发。
+                <i class="fas fa-lock"></i> 本视频内容受版权保护，仅限登录用户观看，禁止下载和转发。
             </div>
-            
-            
-            <div class="video-container">
+
+            <div class="video-wrapper">
                 <video id="videoPlayer" controlsList="nodownload" disablePictureInPicture>
-                    <!-- 视频由后端提供，使用两个source标签 -->
-                    <!-- 这里我们只保留一个活动的source标签 -->
                     <source id="activeSource" src="https://playback.eeo.cn/794b4a11vodbj1252412222/956a25735145403699570855666/f0.mp4" type="video/mp4">
                     您的浏览器不支持HTML5视频播放。
                 </video>
-                <div class="video-overlay" id="playOverlay">
-                    <i class="fas fa-play play-icon"></i>
+
+                <div class="login-overlay" id="loginOverlay">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2>本课程视频仅对付费用户开放</h2>
+                    <p>请登录您的账号以继续观看完整的教学内容。</p>
+                    <button class="login-btn" id="fakeLoginBtn">
+                        <i class="fas fa-sign-in-alt"></i> 立即登录观看
+                    </button>
                 </div>
             </div>
-            
-            <div class="controls">
+
+            <div class="controls" id="videoControls">
                 <div class="control-buttons">
-                    <button class="control-btn" id="playPauseBtn">
+                    <button class="control-btn" id="playPauseBtn" disabled>
                         <i class="fas fa-play"></i>
                     </button>
-                    <button class="control-btn" id="muteBtn">
+                    <button class="control-btn" id="muteBtn" disabled>
                         <i class="fas fa-volume-up"></i>
                     </button>
-                    <button class="control-btn" id="fullscreenBtn">
+                    <button class="control-btn" id="fullscreenBtn" disabled>
                         <i class="fas fa-expand"></i>
                     </button>
                 </div>
-                
+
                 <div class="progress-container">
                     <div class="progress-bar" id="progressBar">
                         <div class="progress" id="progress"></div>
                     </div>
                 </div>
-                
+
                 <div class="time">
                     <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
                 </div>
-                
+
                 <div class="volume-container">
                     <i class="fas fa-volume-down"></i>
-                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1" value="1">
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1" value="1" disabled>
                     <i class="fas fa-volume-up"></i>
                 </div>
-                
-                <select id="playbackRate">
+
+                <select id="playbackRate" disabled>
                     <option value="0.5">0.5x</option>
                     <option value="0.75">0.75x</option>
                     <option value="1" selected>正常</option>
@@ -456,14 +426,14 @@
                     <option value="2">2x</option>
                 </select>
             </div>
-            
+
             <div class="video-info">
                 <div class="info-box">
-                    <div class="info-value" id="currentVideo">视频 1</div>
-                    <div class="info-label">当前播放</div>
+                    <div class="info-value" id="currentVideo">几何变换</div>
+                    <div class="info-label">主题</div>
                 </div>
                 <div class="info-box">
-                    <div class="info-value" id="videoStatus">准备中</div>
+                    <div class="info-value" id="videoStatus">🔒 需登录</div>
                     <div class="info-label">状态</div>
                 </div>
                 <div class="info-box">
@@ -476,9 +446,9 @@
                 </div>
             </div>
         </div>
-        
+
         <footer>
-            <p><a href="8A01.html" style="color: black;">点击跳转P1</p>
+            <p>版权所有 © 2025 创新S自招 | <a href="8A01.html" style="color: var(--primary-dark); text-decoration: none;">点击跳转P1</a></p>
         </footer>
     </div>
 
@@ -490,199 +460,145 @@
             const fullscreenBtn = document.getElementById('fullscreenBtn');
             const progressBar = document.getElementById('progressBar');
             const progress = document.getElementById('progress');
-            const currentTime = document.getElementById('currentTime');
-            const duration = document.getElementById('duration');
+            const currentTimeEl = document.getElementById('currentTime');
+            const durationEl = document.getElementById('duration');
             const volumeSlider = document.getElementById('volumeSlider');
             const playbackRate = document.getElementById('playbackRate');
-            const playOverlay = document.getElementById('playOverlay');
-            const videoOptions = document.querySelectorAll('.video-option');
-            const currentVideoElement = document.getElementById('currentVideo');
-            const videoStatusElement = document.getElementById('videoStatus');
-            const videoDurationElement = document.getElementById('videoDuration');
-            const activeSource = document.getElementById('activeSource');
+            const videoDurationEl = document.getElementById('videoDuration');
+            const videoStatusEl = document.getElementById('videoStatus');
+            const loginOverlay = document.getElementById('loginOverlay');
+            const fakeLoginBtn = document.getElementById('fakeLoginBtn');
+            const videoControls = document.getElementById('videoControls');
+
+            let isLoggedIn = false; // 模拟登录状态
             
-            // 视频源 - 由后端提供
-            const videoSources = {
-                1: "video-part1.mp4", // 替换为后端提供的实际视频URL
-                2: "video-part2.mp4"  // 替换为后端提供的实际视频URL
-            };
-            
-            let currentVideo = 1;
-            let currentPlayingState = false;
-            
-            // 视频切换功能
-            videoOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // 移除所有active类
-                    videoOptions.forEach(o => o.classList.remove('active'));
-                    
-                    // 添加active类到当前点击的选项
-                    this.classList.add('active');
-                    
-                    // 获取视频编号
-                    const videoNumber = parseInt(this.getAttribute('data-video'));
-                    
-                    // 切换视频
-                    switchVideo(videoNumber);
+            // --- 登录逻辑 ---
+            fakeLoginBtn.addEventListener('click', function() {
+                // 模拟登录成功
+                isLoggedIn = true;
+                loginOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loginOverlay.style.display = 'none';
+                    videoControls.classList.add('active');
+                }, 500);
+
+                // 启用所有视频控制按钮和元素
+                [playPauseBtn, muteBtn, fullscreenBtn, volumeSlider, playbackRate].forEach(el => el.disabled = false);
+
+                // 自动开始播放（现代浏览器可能阻止，但我们尝试）
+                video.play().catch(e => {
+                    console.log("自动播放被阻止，等待用户点击");
                 });
-            });
-            
-            // 切换视频函数
-            function switchVideo(videoNumber) {
-                if (videoNumber === currentVideo) return;
-                
-                // 保存当前播放状态
-                currentPlayingState = !video.paused;
-                
-                // 更新当前视频编号
-                currentVideo = videoNumber;
-                currentVideoElement.textContent = `视频 ${videoNumber}`;
-                
-                // 加载相应的视频源
-                loadVideo(videoNumber);
-            }
-            
-            // 加载视频函数
-            function loadVideo(videoNumber) {
-                // 设置新的视频源
-                activeSource.src = videoSources[videoNumber];
-                
-                // 重新加载视频
-                video.load();
-                videoStatusElement.textContent = "已加载";
-                
-                // 如果之前是播放状态，则播放新视频
-                if (currentPlayingState) {
-                    video.play().catch(e => {
-                        console.log("自动播放被阻止，需要用户交互");
-                    });
-                }
-                
                 updatePlayButton();
-            }
-            
-            // 播放/暂停
+                videoStatusEl.textContent = "播放中"; // 初始状态更新
+            });
+
+            // --- 视频控制功能 (仅在登录后启用) ---
+
             function togglePlayPause() {
+                if (!isLoggedIn) return;
                 if (video.paused) {
                     video.play();
-                    videoStatusElement.textContent = "播放中";
+                    videoStatusEl.textContent = "播放中";
                 } else {
                     video.pause();
-                    videoStatusElement.textContent = "已暂停";
+                    videoStatusEl.textContent = "已暂停";
                 }
                 updatePlayButton();
             }
-            
+
             playPauseBtn.addEventListener('click', togglePlayPause);
-            playOverlay.addEventListener('click', togglePlayPause);
             
             // 更新播放按钮状态
             function updatePlayButton() {
+                if (!isLoggedIn) return;
                 if (video.paused) {
                     playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                    playOverlay.style.opacity = '1';
                 } else {
                     playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                    playOverlay.style.opacity = '0';
                 }
             }
-            
+
             // 静音
             muteBtn.addEventListener('click', function() {
+                if (!isLoggedIn) return;
                 video.muted = !video.muted;
                 muteBtn.innerHTML = video.muted ? 
                     '<i class="fas fa-volume-mute"></i>' : 
                     '<i class="fas fa-volume-up"></i>';
             });
-            
+
             // 全屏
             fullscreenBtn.addEventListener('click', function() {
+                if (!isLoggedIn) return;
+                const wrapper = document.querySelector('.video-wrapper');
                 if (!document.fullscreenElement) {
-                    video.requestFullscreen().catch(err => {
+                    wrapper.requestFullscreen().catch(err => {
                         console.log(`全屏请求错误: ${err.message}`);
                     });
                 } else {
                     document.exitFullscreen();
                 }
             });
-            
+
             // 更新进度条
             video.addEventListener('timeupdate', function() {
+                if (!isLoggedIn) return;
                 const percent = (video.currentTime / video.duration) * 100;
                 progress.style.width = `${percent}%`;
-                
-                // 更新时间显示
-                currentTime.textContent = formatTime(video.currentTime);
+                currentTimeEl.textContent = formatTime(video.currentTime);
             });
-            
+
             // 设置视频总时长
             video.addEventListener('loadedmetadata', function() {
-                duration.textContent = formatTime(video.duration);
-                videoDurationElement.textContent = formatTime(video.duration);
+                durationEl.textContent = formatTime(video.duration);
+                videoDurationEl.textContent = formatTime(video.duration);
             });
-            
+
             // 点击进度条跳转
             progressBar.addEventListener('click', function(e) {
+                if (!isLoggedIn) return;
                 const rect = progressBar.getBoundingClientRect();
                 const percent = (e.clientX - rect.left) / rect.width;
                 video.currentTime = percent * video.duration;
             });
-            
+
             // 音量控制
             volumeSlider.addEventListener('input', function() {
+                if (!isLoggedIn) return;
                 video.volume = volumeSlider.value;
             });
-            
+
             // 播放速度控制
             playbackRate.addEventListener('change', function() {
+                if (!isLoggedIn) return;
                 video.playbackRate = playbackRate.value;
             });
-            
+
             // 格式化时间显示
             function formatTime(seconds) {
                 if (isNaN(seconds)) return "--:--";
-                
                 const mins = Math.floor(seconds / 60);
                 const secs = Math.floor(seconds % 60);
                 return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
             }
-            
-            // 防止右键菜单和键盘快捷键
+
+            // 版权保护：防止右键菜单和键盘快捷键
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
                 return false;
             });
             
             document.addEventListener('keydown', function(e) {
-                // 禁用F12
-                if(e.key === 'F12') {
-                    e.preventDefault();
-                    return false;
-                }
-                
-                // 禁用Ctrl+Shift+I
-                if(e.ctrlKey && e.shiftKey && e.key === 'I') {
-                    e.preventDefault();
-                    return false;
-                }
-                
-                // 禁用Ctrl+U
-                if(e.ctrlKey && e.key === 'u') {
-                    e.preventDefault();
-                    return false;
-                }
-                
-                // 禁用Ctrl+S
-                if(e.ctrlKey && e.key === 's') {
+                if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 's')) {
                     e.preventDefault();
                     return false;
                 }
             });
-            
-            // 初始化
-            updatePlayButton();
+
+            // 确保视频的controls属性被禁用，防止用户直接操作原生控件
+            video.controls = false;
         });
     </script>
 </body>
-
 </html>
