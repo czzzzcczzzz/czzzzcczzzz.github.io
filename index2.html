@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>橙子粥粥粥丨个人博客</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/ionicons@5.5.2/dist/css/ionicons.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --platinum: #E5E4E2;
+            --silver: #C0C0C0;
+            --metal-accent: #6C757D;
+            --obsidian: #0A0A0A;
+            --orange: #FF8C42;
+            --orange-light: #FFB88C;
+            --gradient-angle: 152deg;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(
+                var(--gradient-angle),
+                var(--platinum) 0%,
+                rgba(229,228,226,0.95) 50%,
+                rgba(192,192,192,0.9) 100%
+            );
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.88);
+            padding: 1.2rem 5%;
+            backdrop-filter: saturate(180%) blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--obsidian);
+            letter-spacing: 1.2px;
+            font-weight: 700;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--metal-accent);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--metal-accent);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .hero-section {
+            padding: 15rem 5% 8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            color: var(--obsidian);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .hero-title span {
+            color: var(--orange);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--metal-accent);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .primary-cta {
+            background: var(--orange);
+            color: white;
+            box-shadow: 0 4px 6px rgba(255, 140, 66, 0.15);
+        }
+
+        .secondary-cta {
+            border: 2px solid var(--orange);
+            color: var(--orange);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 140, 66, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 4rem 5%;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(8px);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--orange);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .stat-label {
+            color: var(--metal-accent);
+            font-size: 0.95rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .featured-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 5%;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--obsidian);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--orange);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--orange-light), var(--orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .article-title {
+            font-size: 1.3rem;
+            color: var(--obsidian);
+            margin-bottom: 0.8rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .article-excerpt {
+            color: var(--metal-accent);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--metal-accent);
+            font-size: 0.85rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .read-more {
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-link {
+            color: var(--metal-accent);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--orange);
+        }
+
+        .copyright {
+            color: var(--metal-accent);
+            font-size: 0.9rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* 移动端暂时隐藏 */
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="blog.html" class="nav-link">文章</a>
+                <a href="video.html" class="nav-link">视频</a>
+                <a href="login.html" class="nav-link" id="login-link" style="display: none;">登录</a>
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar" id="user-avatar">橙</div>
+                    <span id="username-display">用户</span>
+                    <a href="profile.html" class="nav-link">资料</a>
+                    <a href="#" class="nav-link" id="logout-link">退出</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero-section">
+            <h1 class="hero-title">欢迎来到<span>橙子粥粥粥</span><br>的个人博客空间</h1>
+            <p class="hero-subtitle">
+                这里记录着我的思考、创作与生活点滴。<br>
+                分享技术见解、生活感悟与创意内容。
+            </p>
+            <div class="cta-buttons">
+                <a href="blog.html" class="cta-button primary-cta">
+                    <ion-icon name="book-outline"></ion-icon>
+                    阅读文章
+                </a>
+                <a href="video.html" class="cta-button secondary-cta">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                    观看视频
+                </a>
+                <a href="profile.html" class="cta-button secondary-cta">
+                    <ion-icon name="person-outline"></ion-icon>
+                    个人资料
+                </a>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">24</div>
+                <div class="stat-label">原创文章</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">视频作品</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1.2K</div>
+                <div class="stat-label">累计阅读</div>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <h2 class="section-title">精选文章</h2>
+            <div class="articles-grid">
+                <div class="article-card">
+                    <div class="article-image">
+                        <ion-icon name="code-slash-outline"></ion-icon>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">前端开发中的设计模式实践</h3>
+                        <p class="article-excerpt">探索在前端项目中如何有效应用常见的设计模式，提升代码可维护性和可扩展性...</p>
+                        <div class="article-meta">
+                            <span>2023-10-15</span>
+                            <a href="#" class="read-more">
+                                阅读更多
+                                <ion-icon name="arrow-forward-outline"></ion-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <div class="article-image">
+                        <ion-icon name="camera-outline"></ion-icon>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">摄影构图的艺术与技巧</h3>
+                        <p class="article-excerpt">分享我在旅行摄影中积累的构图心得，以及如何通过简单技巧提升照片质量...</p>
+                        <div class="article-meta">
+                            <span>2023-09-28</span>
+                            <a href="#" class="read-more">
+                                阅读更多
+                                <ion-icon name="arrow-forward-outline"></ion-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <div class="article-image">
+                        <ion-icon name="cafe-outline"></ion-icon>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">手冲咖啡的乐趣与技巧</h3>
+                        <p class="article-excerpt">从咖啡豆选择到冲泡手法，分享我作为咖啡爱好者的心得与体验...</p>
+                        <div class="article-meta">
+                            <span>2023-09-10</span>
+                            <a href="#" class="read-more">
+                                阅读更多
+                                <ion-icon name="arrow-forward-outline"></ion-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-weibo"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="mail-outline"></ion-icon>
+                </a>
+            </div>
+            <p class="copyright">© 2023 橙子粥粥粥的个人博客. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        // 检查登录状态 - 必须登录才能访问此页面
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const username = localStorage.getItem('username');
+            
+            // 如果未登录，跳转到登录页面
+            if (isLoggedIn !== 'true') {
+                alert('请先登录！');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // 显示用户信息
+            const usernameDisplay = document.getElementById('username-display');
+            const userAvatar = document.getElementById('user-avatar');
+            const logoutLink = document.getElementById('logout-link');
+            
+            if (username) {
+                usernameDisplay.textContent = username;
+                userAvatar.textContent = username.charAt(0);
+            }
+            
+            // 退出登录功能
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                alert('已退出登录');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

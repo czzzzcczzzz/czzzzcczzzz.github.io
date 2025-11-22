@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 橙子粥粥粥丨个人博客</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/ionicons@5.5.2/dist/css/ionicons.min.css" rel="stylesheet">
+    
+    <style>
+        /* 样式保持不变 */
+        :root {
+            --platinum: #E5E4E2;
+            --silver: #C0C0C0;
+            --metal-accent: #6C757D;
+            --obsidian: #0A0A0A;
+            --orange: #FF8C42;
+            --orange-light: #FFB88C;
+            --gradient-angle: 152deg;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(
+                var(--gradient-angle),
+                var(--platinum) 0%,
+                rgba(229,228,226,0.95) 50%,
+                rgba(192,192,192,0.9) 100%
+            );
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.88);
+            padding: 1.2rem 5%;
+            backdrop-filter: saturate(180%) blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--obsidian);
+            letter-spacing: 1.2px;
+            font-weight: 700;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--metal-accent);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 2rem;
+            margin-top: 80px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            color: var(--obsidian);
+            margin-bottom: 0.5rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .login-subtitle {
+            color: var(--metal-accent);
+            font-size: 1rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--metal-accent);
+            font-weight: 500;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--silver);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--orange);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .login-button:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--metal-accent);
+            font-size: 0.9rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem 5%;
+            text-align: center;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-link {
+            color: var(--metal-accent);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--orange);
+        }
+
+        .copyright {
+            color: var(--metal-accent);
+            font-size: 0.9rem;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .login-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="blog.html" class="nav-link">文章</a>
+                <a href="video.html" class="nav-link">视频</a>
+                <a href="login.html" class="nav-link">登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1 class="login-title">账号登录</h1>
+                <p class="login-subtitle">欢迎回到橙子粥粥粥的个人博客</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">用户名</label>
+                    <input type="text" id="username" class="form-input" placeholder="请输入用户名" required>
+                    <div id="usernameError" class="error-message">用户名不能为空</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">密码</label>
+                    <input type="password" id="password" class="form-input" placeholder="请输入密码" required>
+                    <div id="passwordError" class="error-message">密码不能为空</div>
+                </div>
+                
+                <button type="submit" class="login-button">登录</button>
+                
+                <div class="login-footer">
+                    <p>还没有账号？请联系管理员获取</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-weibo"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="mail-outline"></ion-icon>
+                </a>
+            </div>
+            <p class="copyright">© 2023 橙子粥粥粥的个人博客. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        // 预设的账号信息
+        const validUsers = [
+            { username: "admin", password: "123456" },
+            { username: "chengzi", password: "zhouzhou" },
+            { username: "guest", password: "guest123" }
+        ];
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const usernameError = document.getElementById('usernameError');
+            const passwordError = document.getElementById('passwordError');
+            
+            // 重置错误信息
+            usernameError.style.display = 'none';
+            passwordError.style.display = 'none';
+            
+            // 验证输入
+            let isValid = true;
+            
+            if (!username) {
+                usernameError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!password) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // 验证账号密码
+            const user = validUsers.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // 保存登录状态到localStorage - 这是修复的关键部分
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username);
+                
+                alert('登录成功！即将跳转到首页...');
+                window.location.href = 'index2.html'; // 修改为跳转到index2.html
+            } else {
+                alert('用户名或密码错误，请重试！');
+            }
+        });
+        
+        // 输入时隐藏错误信息
+        document.getElementById('username').addEventListener('input', function() {
+            document.getElementById('usernameError').style.display = 'none';
+        });
+        
+        document.getElementById('password').addEventListener('input', function() {
+            document.getElementById('passwordError').style.display = 'none';
+        });
+        
+        // 检查是否已经登录，如果已登录则跳转到首页
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = 'index2.html'; // 修改为跳转到index2.html
+            }
+        });
+    </script>
+</body>
+</html>

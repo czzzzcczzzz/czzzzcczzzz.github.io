@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404丨橙子粥粥粥's blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --platinum: #E5E4E2;
+            --titanium: #878681;
+            --liquid-metal: rgba(192,192,192,0.3);
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 50%, 
+                var(--platinum) 0%, 
+                #d3d3d3 100%);
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+            perspective: 1000px;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            width: 200vw;
+            height: 200vh;
+            background-image: 
+                linear-gradient(var(--titanium) 1px, transparent 1px),
+                linear-gradient(90deg, var(--titanium) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.15;
+            transform: rotateX(65deg) translateZ(-200px);
+            animation: gridFlow 40s linear infinite;
+        }
+
+        .error-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .hologram {
+            font-size: 12rem;
+            color: transparent;
+            text-shadow: 
+                0 0 8px rgba(255,255,255,0.8),
+                0 0 20px rgba(192,192,192,0.5);
+            margin-bottom: 2rem;
+            animation: hologramFlicker 2s infinite;
+        }
+
+        .error-message {
+            font-size: 1.8rem;
+            color: var(--titanium);
+            letter-spacing: 2px;
+            margin: 2rem 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .portal-button {
+            position: relative;
+            padding: 16px 45px;
+            background: var(--liquid-metal);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .portal-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent 135deg,
+                rgba(255,255,255,0.8) 180deg,
+                transparent 225deg
+            );
+            animation: portalShine 3s linear infinite;
+        }
+
+        .portal-button:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .portal-button span {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes gridFlow {
+            0% { transform: rotateX(65deg) translate(-10%, -10%); }
+            100% { transform: rotateX(65deg) translate(-30%, -30%); }
+        }
+
+        @keyframes hologramFlicker {
+            0%, 100% { opacity: 0.95; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes portalShine {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .hologram { font-size: 8rem; }
+            .error-message { font-size: 1.2rem; }
+            .portal-button { padding: 14px 35px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    
+    <div class="error-container">
+        <div class="hologram" data-text="404">404</div>
+        <div class="error-message">404 啊哦！遇到了些小问题</div>
+        <button class="portal-button" onclick="initiatePortalTransition()">
+            <span>返回主页</span>
+        </button>
+    </div>
+
+    <script>
+        function initiatePortalTransition() {
+            const btn = document.querySelector('.portal-button');
+            btn.style.transform = 'scale(1.2)';
+            btn.style.opacity = '0.8';
+            
+            // 創建粒子特效
+            for(let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 4px;
+                    height: 4px;
+                    background: rgba(255,255,255,0.8);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    left: ${btn.offsetLeft + btn.offsetWidth/2}px;
+                    top: ${btn.offsetTop + btn.offsetHeight/2}px;
+                    animation: particleMove ${Math.random()*0.5+0.3}s linear;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                // 隨機運動方向
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                
+                particle.animate([
+                    { transform: `translate(0,0)` },
+                    { transform: `translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance}px)` }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                }).onfinish = () => particle.remove();
+            }
+
+            setTimeout(() => {
+                window.location.href = 'https://czzzzcczzzz.github.io';
+            }, 800);
+        }
+    </script>
+</body>
+</html>
