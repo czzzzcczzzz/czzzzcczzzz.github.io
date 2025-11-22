@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>八年级秋季数学自招班 - 橙子粥粥粥丨个人博客</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/ionicons@5.5.2/dist/css/ionicons.min.css" rel="stylesheet">
+    
+    <style>
+        /* 从 index2.html 和 playback.html 复制的基本样式 */
+        :root {
+            --platinum: #E5E4E2;
+            --silver: #C0C0C0;
+            --metal-accent: #6C757D;
+            --obsidian: #0A0A0A;
+            --orange: #FF8C42;
+            --orange-light: #FFB88C;
+            --gradient-angle: 152deg;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(
+                var(--gradient-angle),
+                var(--platinum) 0%,
+                rgba(229,228,226,0.95) 50%,
+                rgba(192,192,192,0.9) 100%
+            );
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            padding-top: 80px; /* 留出固定导航栏的高度 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏样式（保持与 index2.html 一致） */
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.88);
+            padding: 1.2rem 5%;
+            backdrop-filter: saturate(180%) blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--obsidian);
+            letter-spacing: 1.2px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--metal-accent);
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--metal-accent);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        /* 页面主体样式 */
+        main {
+            flex-grow: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+            width: 100%;
+        }
+
+        .course-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--orange);
+        }
+
+        .course-title {
+            font-size: 2.5rem;
+            color: var(--obsidian);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .course-subtitle {
+            font-size: 1.2rem;
+            color: var(--metal-accent);
+        }
+
+        .lecture-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .lecture-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .lecture-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .lecture-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--orange);
+            margin-right: 1.5rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .lecture-title-text {
+            font-size: 1.1rem;
+            color: var(--obsidian);
+            font-weight: 500;
+        }
+
+        .lecture-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .action-button {
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .action-p1 {
+            background: var(--orange-light);
+            color: var(--obsidian);
+            border: 1px solid var(--orange);
+        }
+        
+        .action-p1:hover {
+            background: var(--orange);
+            color: white;
+        }
+        
+        .action-p2 {
+            background: var(--metal-accent);
+            color: white;
+        }
+
+        .action-p2:hover {
+            background: var(--obsidian);
+        }
+
+        .action-files {
+            background: var(--platinum);
+            color: var(--metal-accent);
+            border: 1px solid var(--silver);
+        }
+
+        .action-files:hover {
+            background: var(--silver);
+            color: var(--obsidian);
+        }
+
+        /* 底部样式（保持与 index2.html 一致） */
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-link {
+            color: var(--metal-accent);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--orange);
+        }
+
+        .copyright {
+            color: var(--metal-accent);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .lecture-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .lecture-info {
+                margin-bottom: 1rem;
+            }
+            .lecture-actions {
+                width: 100%;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+            .action-button {
+                flex-grow: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="nav-links">
+                <a href="index2.html" class="nav-link">首页</a>
+                <a href="playback.html" class="nav-link">回放</a> 
+                <a href="blog.html" class="nav-link">文章</a>
+                <a href="video.html" class="nav-link">视频</a>
+                <div class="user-info" id="user-info" style="display: none;">
+                    <div class="user-avatar" id="user-avatar">?</div>
+                    <span id="username-display">用户</span>
+                    <a href="profile.html" class="nav-link">资料</a>
+                    <a href="#" class="nav-link" id="logout-link">退出</a>
+                </div>
+                <a href="login.html" class="nav-link" id="login-link" style="display: block;">登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="course-header">
+            <h1 class="course-title">八年级秋季数学自招班</h1>
+            <p class="course-subtitle">共 17 讲精选内容，助力数学竞赛与自招备考</p>
+        </div>
+        
+        <div class="lecture-list" id="lecture-list">
+            </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">橙子<span>粥粥粥</span></div>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="logo-weibo"></ion-icon>
+                </a>
+                <a href="#" class="social-link">
+                    <ion-icon name="mail-outline"></ion-icon>
+                </a>
+            </div>
+            <p class="copyright">© 2023 橙子粥粥粥的个人博客. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        // === 1. 登录状态检查和强制跳转 ===
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            
+            // 如果未登录，跳转到登录页面
+            if (isLoggedIn !== 'true') {
+                alert('您必须登录才能查看本课程内容！');
+                // 使用 location.replace 确保后退按钮不会回到未登录的课程页面
+                window.location.replace('login.html'); 
+                return;
+            }
+            
+            // 如果已登录，则加载页面内容和用户逻辑
+            setupUserInterface();
+            generateLectureList();
+        });
+
+        // === 2. 用户界面设置（登录后执行） ===
+        function setupUserInterface() {
+            const username = localStorage.getItem('username');
+            const userInfoDiv = document.getElementById('user-info');
+            const loginLink = document.getElementById('login-link');
+            const usernameDisplay = document.getElementById('username-display');
+            const userAvatar = document.getElementById('user-avatar');
+            const logoutLink = document.getElementById('logout-link');
+
+            // 确保显示用户信息，隐藏登录链接
+            userInfoDiv.style.display = 'flex';
+            loginLink.style.display = 'none';
+
+            if (username) {
+                usernameDisplay.textContent = username;
+                userAvatar.textContent = username.charAt(0).toUpperCase();
+            } else {
+                 usernameDisplay.textContent = '用户';
+                 userAvatar.textContent = 'U';
+            }
+
+            // 退出登录功能
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                alert('已退出登录');
+                // 退出后回到未登录的首页
+                window.location.href = 'index.html'; 
+            });
+        }
+
+        // === 3. 动态生成课程列表（登录后执行） ===
+        function generateLectureList() {
+            const lectures = [
+                "第一讲：初识代数基础与数论入门",
+                "第二讲：完全平方公式与因式分解技巧",
+                "第三讲：代数恒等式的应用与构造",
+                "第四讲：根式运算与非负数的性质",
+                "第五讲：平面几何基础回顾与提高",
+                "第六讲：三角形的性质与判定",
+                "第七讲：四边形特殊性质的深入探究",
+                "第八讲：几何变换：平移与旋转",
+                "第九讲：几何综合题的分析与解法",
+                "第十讲：一元二次方程的解法与判别式",
+                "第十一讲：韦达定理与根的分布问题",
+                "第十二讲：分式方程与无理方程",
+                "第十三讲：一次函数与二次函数初步",
+                "第十四讲：函数图象与几何综合应用",
+                "第十五讲：不等式基础与柯西不等式",
+                "第十六讲：直线与圆的位置关系",
+                "第十七讲：综合复习与自招模拟测试"
+            ];
+            
+            const lectureList = document.getElementById('lecture-list');
+            
+            lectures.forEach((title, index) => {
+                const lectureNumber = index + 1;
+                const paddedNumber = lectureNumber.toString().padStart(2, '0'); // 确保编号是 01, 02... 17
+                
+                const p1Href = `8A${paddedNumber}.html`;      // 8A01.html
+                const p2Href = `8A${paddedNumber}02.html`;    // 8A0102.html
+                const filesHref = `8A${paddedNumber}files.html`; // 8A01files.html
+
+                const lectureCard = document.createElement('div');
+                lectureCard.className = 'lecture-card';
+                
+                lectureCard.innerHTML = `
+                    <div class="lecture-info">
+                        <div class="lecture-number">${lectureNumber}</div>
+                        <div class="lecture-title-text">${title}</div>
+                    </div>
+                    <div class="lecture-actions">
+                        <a href="${p1Href}" class="action-button action-p1">
+                            <ion-icon name="videocam-outline"></ion-icon>
+                            P1 视频
+                        </a>
+                        <a href="${p2Href}" class="action-button action-p2">
+                            <ion-icon name="videocam-outline"></ion-icon>
+                            P2 视频
+                        </a>
+                        <a href="${filesHref}" class="action-button action-files">
+                            <ion-icon name="document-text-outline"></ion-icon>
+                            资料
+                        </a>
+                    </div>
+                `;
+                
+                lectureList.appendChild(lectureCard);
+            });
+        }
+    </script>
+</body>
+</html>
